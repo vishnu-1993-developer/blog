@@ -19,10 +19,8 @@ return new class extends Migration
             $table->string('link');
             $table->boolean('is_external_link')->default(0);
             $table->integer('sort_order');
-            $table->unsignedBigInteger('menu_id');
-            $table->unsignedBigInteger('parent_menu_item_id');
-            $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
-            $table->foreign('parent_menu_item_id')->references('id')->on('menu_items')->onDelete('cascade');
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreign('parent_id')->references('id')->on('menu_items')->onDelete('cascade');
             $table->timestamps();
         });
     }
