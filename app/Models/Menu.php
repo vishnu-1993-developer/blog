@@ -15,8 +15,22 @@ class Menu extends Model
         'description'
     ];
 
-    public function menu_items(): HasMany
+    public function menu_items(): BelongsToMany
     {
-        return $this->hasMany(MenuItem::class);
+        return $this->belongsToMany(MenuItem::class,"menu__menu_item","menu_id","menu_item_id")
+        ->withTimestamps()
+        ->withPivot(['sort_order','include_subitem'])
+        ->orderByPivot('sort_order')
+        ->as('menu_links');
+    }
+
+    public function parent_menu_items(): BelongsToMany
+    {
+        return $this->belongsToMany(MenuItem::class,"menu__menu_item","menu_id","menu_item_id")
+        ->withTimestamps()
+        ->withPivot(['sort_order','include_subitem'])
+        ->orderByPivot('sort_order')
+        ->wherePivotIn('include_subitem',[0])
+        ->as('menu_links');
     }
 }

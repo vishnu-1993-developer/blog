@@ -15,7 +15,6 @@ return new class extends Migration
         Schema::create('menu_items', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->integer('language_id')->nullable();
             $table->string('link');
             $table->boolean('is_external_link')->default(0);
             $table->integer('sort_order');
