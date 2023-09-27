@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Set;
 
 class MenuMenuItemResource extends Resource
@@ -28,6 +29,11 @@ class MenuMenuItemResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $sortOrders = [];
+        for($i=1;$i<25;$i++)
+        {
+            $sortOrders[] = $i;
+        }
         return $form
             ->schema([
                 Select::make('menu_id')
@@ -41,8 +47,9 @@ class MenuMenuItemResource extends Resource
                 ->searchable(),
                 Toggle::make('include_subitem')
                     ->required(),
-                // Select::make('sort_order')
-                // ->options()
+                Select::make('sort_order')
+                ->options($sortOrders)
+                ->searchable()
             ]);
     }
 
@@ -50,7 +57,10 @@ class MenuMenuItemResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('menu_id'),
+                TextColumn::make('menu_item_id'),
+                TextColumn::make('include_subitem'),
+                TextColumn::make('sort_order')
             ])
             ->filters([
                 //
