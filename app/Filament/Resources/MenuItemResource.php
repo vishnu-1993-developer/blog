@@ -27,20 +27,20 @@ class MenuItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('parent_id')
-                    ->label('Parent Menu')
-                    ->options(MenuItem::all()->pluck('title','id')),
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('link')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Toggle::make('is_external_link')
-                    ->required(),
                 Forms\Components\TextInput::make('sort_order')
                     ->required()
                     ->numeric(),
+                Forms\Components\Select::make('parent_id')
+                    ->label('Parent Menu')
+                    ->options(MenuItem::all()->pluck('title','id')),
+                Forms\Components\Toggle::make('is_external_link')
+                    ->required(),
             ]);
     }
 
@@ -53,13 +53,10 @@ class MenuItemResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('language_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('link')
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_external_link')
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('is_external_link')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('sort_order')
                     ->numeric()
                     ->sortable(),

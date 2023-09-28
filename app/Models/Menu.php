@@ -33,4 +33,9 @@ class Menu extends Model
         ->wherePivotIn('include_subitem',[0])
         ->as('menu_links');
     }
+
+    public function title()
+    {
+        return "Tester";
+    }
 }

@@ -43,8 +43,8 @@ class MenuMenuItemResource extends Resource
                 Select::make('menu_item_id')
                 ->label("Select Menu Items")
                 ->options(MenuItem::all()->pluck('title','id'))
-                // ->multiple()
-                ->searchable(),
+                ->searchable()
+                ->multiple(),
                 Toggle::make('include_subitem')
                     ->required(),
                 Select::make('sort_order')
@@ -57,9 +57,12 @@ class MenuMenuItemResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('menu_id'),
-                TextColumn::make('menu_item_id'),
-                TextColumn::make('include_subitem'),
+                TextColumn::make('menu_id')
+                ->label("Menu Name"),
+                TextColumn::make('menu_item_id')
+                ->label("Menu Item"),
+                TextColumn::make('include_subitem')
+                ->label("include Child Items"),
                 TextColumn::make('sort_order')
             ])
             ->filters([

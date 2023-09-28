@@ -44,6 +44,8 @@ class PostResource extends Resource
                         ->columnSpanFull(),
                     Forms\Components\Toggle::make('active')
                     ->required(),
+                    Forms\Components\Toggle::make('featured')
+                    ->required(),
                     Forms\Components\DateTimePicker::make('published_at'),
                 ])->columnSpan(8),
             Forms\Components\Card::make()
@@ -77,6 +79,8 @@ class PostResource extends Resource
                 Tables\Columns\ImageColumn::make('thumbnail')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('active')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('featured')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('published_at')
                     ->dateTime()

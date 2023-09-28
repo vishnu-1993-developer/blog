@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Menu;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class MenuItem extends Model
 {
@@ -25,5 +26,12 @@ class MenuItem extends Model
         ->withPivot(['sort_order','include_subitem'])
         ->orderByPivot('sort_order')
         ->as('menu_name');
+    }
+
+    protected function isExternalLink(): Attribute
+    {
+        return Attribute::make(
+            get: fn(string $value)  =>  ($value == 1 ? "Yes" : "No"),
+        );
     }
 }
