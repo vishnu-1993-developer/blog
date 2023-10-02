@@ -47,6 +47,8 @@ class MenuMenuItemResource extends Resource
                 ->multiple(),
                 Toggle::make('include_subitem')
                     ->required(),
+                Forms\Components\Toggle::make('active')
+                    ->required(),
                 Select::make('sort_order')
                 ->options($sortOrders)
                 ->searchable()

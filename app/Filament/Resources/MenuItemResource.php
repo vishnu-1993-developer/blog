@@ -41,6 +41,8 @@ class MenuItemResource extends Resource
                     ->options(MenuItem::all()->pluck('title','id')),
                 Forms\Components\Toggle::make('is_external_link')
                     ->required(),
+                Forms\Components\Toggle::make('active')
+                    ->required(),
             ]);
     }
 
@@ -48,9 +50,6 @@ class MenuItemResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('parent_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('link')
@@ -60,6 +59,10 @@ class MenuItemResource extends Resource
                 Tables\Columns\TextColumn::make('sort_order')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('parent_id')
+                    ->numeric()
+                    ->sortable()
+                    ->label("Parent Menu"),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

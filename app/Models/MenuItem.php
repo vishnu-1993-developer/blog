@@ -16,7 +16,8 @@ class MenuItem extends Model
         "link",
         "is_external_link",
         "sort_order",
-        "parent_id"
+        "parent_id",
+        "active"
     ];
 
     public function menus(): BelongsToMany

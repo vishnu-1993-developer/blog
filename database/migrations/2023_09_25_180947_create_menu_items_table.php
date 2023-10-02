@@ -19,6 +19,7 @@ return new class extends Migration
             $table->boolean('is_external_link')->default(0);
             $table->integer('sort_order');
             $table->unsignedBigInteger('parent_id')->nullable();
+            $table->boolean('active');
             $table->foreign('parent_id')->references('id')->on('menu_items')->onDelete('cascade');
             $table->timestamps();
         });

@@ -12,10 +12,11 @@ class Menu extends Model
 
     protected $fillable = [
         'title',
-        'description'
+        'description',
+        'active'
     ];
 
-    public function menu_items(): BelongsToMany
+    public function menu_items()
     {
         return $this->belongsToMany(MenuItem::class,"menu__menu_item","menu_id","menu_item_id")
         ->withTimestamps()
@@ -24,7 +25,7 @@ class Menu extends Model
         ->as('menu_links');
     }
 
-    public function parent_menu_items(): BelongsToMany
+    public function parent_menu_items()
     {
         return $this->belongsToMany(MenuItem::class,"menu__menu_item","menu_id","menu_item_id")
         ->withTimestamps()
@@ -32,10 +33,5 @@ class Menu extends Model
         ->orderByPivot('sort_order')
         ->wherePivotIn('include_subitem',[0])
         ->as('menu_links');
-    }
-
-    public function title()
-    {
-        return "Tester";
     }
 }
