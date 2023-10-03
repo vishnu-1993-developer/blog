@@ -24,5 +24,8 @@ class DatabaseSeeder extends Seeder
         Category::factory(30)->create();
         Post::factory(50)->create();
         Tag::factory(25)->create();
+        $this->call(MenusTableSeeder::class);
+        $this->call(MenuItemsTableSeeder::class);
+        $this->call(MenuMenuItemTableSeeder::class);
     }
 }

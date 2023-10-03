@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout :title="' - Contact Us'" >
 <!-- Page Content -->
 <!-- Banner Starts Here -->
 <div class="heading-page header-text">
