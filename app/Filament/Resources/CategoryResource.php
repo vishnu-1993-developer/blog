@@ -44,6 +44,8 @@ class CategoryResource extends Resource
                 ->unique(Category::class,'slug', fn ($record)   =>  $record)
                 ->required(),
                 RichEditor::make('content')->label('About Category'),
+                Forms\Components\Toggle::make('active')
+                    ->required(),
                 FileUpload::make('thumbnail')
             ]);
     }
