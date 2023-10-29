@@ -43,7 +43,7 @@ https://templatemo.com/tm-551-stand-blog
     <header class="">
       <nav class="navbar navbar-expand-lg">
         <div class="container">
-          <a class="navbar-brand" href="{{ route('home') }}"><img width="auto" height="120px" src="{{ "/storage/" . $siteSetting->firstWhere('name','Site Logo')->image }}" /> </a>
+          <a class="navbar-brand" href="{{ route('home') }}"><img width="auto" height="120px" src="{{($siteSetting->firstWhere('name','Site Logo')) ? "/storage/" . $siteSetting->firstWhere('name','Site Logo')->image : ""}}" /> </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -88,7 +88,7 @@ https://templatemo.com/tm-551-stand-blog
         </div>
         <div class="col-lg-12">
           <div class="copyright-text">
-            <p>{!! $siteSetting->firstWhere('name','copyright')->value !!}</p>
+            <p>{!! $siteSetting->firstWhere('name','copyright')->value ?? "" !!}</p>
           </div>
         </div>
       </div>
