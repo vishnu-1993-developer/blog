@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('slug');
             $table->string('thumbnail')->nullable();
             $table->longText('body');
+            $table->boolean('featured');
             $table->boolean('active');
             $table->datetime('published_at')->nullable();
             $table->foreignIdFor(User::class,'user_id');

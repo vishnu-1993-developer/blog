@@ -14,7 +14,8 @@ class Category extends Model
         "title",
         "slug",
         "content",
-        "thumbnail"
+        "thumbnail",
+        "active"
     ];
 
     public function posts(): BelongsToMany
