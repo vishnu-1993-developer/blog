@@ -40,7 +40,7 @@ class HomeController extends Controller
         ->orderBy('created_at','desc')
         ->paginate(10);
 
-        return view('home',compact('posts','featuredPosts','recentPosts','categories','tags'));
+        return view('pages.home',compact('posts','featuredPosts','recentPosts','categories','tags'));
     }
 
     public function aboutUs()
@@ -55,14 +55,14 @@ class HomeController extends Controller
 
     public function blog()
     {
-        return view('pages.blog');
+        return view('pages.blogs');
     }
 
-    public function postDetails($slug)
+    public function blogDetails($slug)
     {
-        $post = Post::where('active','=',1)
-        ->where('slug','=',$slug)
-        ->first();
-        return view('pages.post-details',compact('post'));
+        // $post = Post::where('active','=',1)
+        // ->where('slug','=',$slug)
+        // ->first();
+        return view('pages.blog-details');
     }
 }

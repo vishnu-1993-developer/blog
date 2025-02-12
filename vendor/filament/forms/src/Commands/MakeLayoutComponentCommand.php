@@ -5,9 +5,11 @@ namespace Filament\Forms\Commands;
 use Filament\Support\Commands\Concerns\CanManipulateFiles;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\text;
 
+#[AsCommand(name: 'make:form-layout')]
 class MakeLayoutComponentCommand extends Command
 {
     use CanManipulateFiles;
@@ -67,7 +69,7 @@ class MakeLayoutComponentCommand extends Command
             $this->copyStubToApp('LayoutComponentView', $viewPath);
         }
 
-        $this->components->info("Successfully created {$component}!");
+        $this->components->info("Filament form layout component [{$path}] created successfully.");
 
         return static::SUCCESS;
     }

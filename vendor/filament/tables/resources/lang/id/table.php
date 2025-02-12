@@ -10,8 +10,19 @@ return [
 
     'columns' => [
 
+        'actions' => [
+            'label' => 'Aksi|Aksi',
+        ],
+
         'text' => [
+
+            'actions' => [
+                'collapse_list' => 'Sembunyikan :count lainnya',
+                'expand_list' => 'Tampilkan :count lainnya',
+            ],
+
             'more_list_items' => 'dan :count lainnya',
+
         ],
 
     ],
@@ -19,11 +30,15 @@ return [
     'fields' => [
 
         'bulk_select_page' => [
-            'label' => 'Buat/batalkan pilihan semua item untuk tindakan masal.',
+            'label' => 'Buat/batalkan pilihan semua item untuk tindakan massal.',
         ],
 
         'bulk_select_record' => [
-            'label' => 'Buat/batalkan pilihan item :key untuk tindakan masal.',
+            'label' => 'Buat/batalkan pilihan item :key untuk tindakan massal.',
+        ],
+
+        'bulk_select_group' => [
+            'label' => 'Buat/batalkan pilihan grup :title untuk tindakan massal.',
         ],
 
         'search' => [
@@ -101,6 +116,10 @@ return [
     'filters' => [
 
         'actions' => [
+
+            'apply' => [
+                'label' => 'Terapkan filter',
+            ],
 
             'remove' => [
                 'label' => 'Hapus filter',

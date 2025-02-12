@@ -5,26 +5,33 @@
     'recordAction' => null,
     'recordKey' => null,
     'recordUrl' => null,
+    'shouldOpenRecordUrlInNewTab' => false,
 ])
 
 @php
     use Filament\Support\Enums\Alignment;
 
     $action = $column->getAction();
+    $alignment = $column->getAlignment() ?? Alignment::Start;
     $name = $column->getName();
     $shouldOpenUrlInNewTab = $column->shouldOpenUrlInNewTab();
     $tooltip = $column->getTooltip();
     $url = $column->getUrl();
 
+    if (! $alignment instanceof Alignment) {
+        $alignment = filled($alignment) ? (Alignment::tryFrom($alignment) ?? $alignment) : null;
+    }
+
     $columnClasses = \Illuminate\Support\Arr::toCssClasses([
         'flex w-full disabled:pointer-events-none',
-        match ($column->getAlignment()) {
-            Alignment::Center, 'center' => 'justify-center text-center',
-            Alignment::End, 'end' => 'justify-end text-end',
-            Alignment::Left, 'left' => 'justify-start text-left',
-            Alignment::Right, 'right' => 'justify-end text-right',
-            Alignment::Justify, 'justify' => 'justify-between text-justify',
-            default => 'justify-start text-start',
+        match ($alignment) {
+            Alignment::Start => 'justify-start text-start',
+            Alignment::Center => 'justify-center text-center',
+            Alignment::End => 'justify-end text-end',
+            Alignment::Left => 'justify-start text-left',
+            Alignment::Right => 'justify-end text-right',
+            Alignment::Justify, Alignment::Between => 'justify-between text-justify',
+            default => $alignment,
         },
     ]);
 
@@ -32,7 +39,7 @@
 @endphp
 
 <div
-    @if ($tooltip)
+    @if (filled($tooltip))
         x-data="{}"
         x-tooltip="{
             content: @js($tooltip),
@@ -43,7 +50,7 @@
 >
     @if (($url || ($recordUrl && $action === null)) && (! $isClickDisabled))
         <a
-            {{ \Filament\Support\generate_href_html($url ?: $recordUrl, $shouldOpenUrlInNewTab) }}
+            {{ \Filament\Support\generate_href_html($url ?: $recordUrl, $url ? $shouldOpenUrlInNewTab : $shouldOpenRecordUrlInNewTab) }}
             class="{{ $columnClasses }}"
         >
             {{ $slot }}

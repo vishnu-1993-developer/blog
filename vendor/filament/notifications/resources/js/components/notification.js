@@ -1,4 +1,3 @@
-import { mutateDom } from 'alpinejs/src/mutation'
 import { once } from 'alpinejs/src/utils/once'
 
 export default (Alpine) => {
@@ -26,7 +25,15 @@ export default (Alpine) => {
                 notification.duration &&
                 notification.duration !== 'persistent'
             ) {
-                setTimeout(() => this.close(), notification.duration)
+                setTimeout(() => {
+                    if (!this.$el.matches(':hover')) {
+                        this.close()
+
+                        return
+                    }
+
+                    this.$el.addEventListener('mouseleave', () => this.close())
+                }, notification.duration)
             }
 
             this.isShown = true
@@ -36,7 +43,7 @@ export default (Alpine) => {
             const display = this.computedStyle.display
 
             const show = () => {
-                mutateDom(() => {
+                Alpine.mutateDom(() => {
                     this.$el.style.setProperty('display', display)
                     this.$el.style.setProperty('visibility', 'visible')
                 })
@@ -44,7 +51,7 @@ export default (Alpine) => {
             }
 
             const hide = () => {
-                mutateDom(() => {
+                Alpine.mutateDom(() => {
                     this.$el._x_isShown
                         ? this.$el.style.setProperty('visibility', 'hidden')
                         : this.$el.style.setProperty('display', 'none')
@@ -79,38 +86,43 @@ export default (Alpine) => {
                         return
                     }
 
-                    const getTop = () => this.$el.getBoundingClientRect().top
-                    const oldTop = getTop()
+                    // Calling `el.getBoundingClientRect()` from outside `requestAnimationFrame()` can
+                    // occasionally cause the page to scroll to the top.
+                    requestAnimationFrame(() => {
+                        const getTop = () =>
+                            this.$el.getBoundingClientRect().top
+                        const oldTop = getTop()
 
-                    respond(() => {
-                        animation = () => {
-                            if (!this.isShown) {
-                                return
+                        respond(() => {
+                            animation = () => {
+                                if (!this.isShown) {
+                                    return
+                                }
+
+                                this.$el.animate(
+                                    [
+                                        {
+                                            transform: `translateY(${
+                                                oldTop - getTop()
+                                            }px)`,
+                                        },
+                                        { transform: 'translateY(0px)' },
+                                    ],
+                                    {
+                                        duration: this.transitionDuration,
+                                        easing: this.transitionEasing,
+                                    },
+                                )
                             }
 
-                            this.$el.animate(
-                                [
-                                    {
-                                        transform: `translateY(${
-                                            oldTop - getTop()
-                                        }px)`,
-                                    },
-                                    { transform: 'translateY(0px)' },
-                                ],
-                                {
-                                    duration: this.transitionDuration,
-                                    easing: this.transitionEasing,
-                                },
-                            )
-                        }
+                            this.$el
+                                .getAnimations()
+                                .forEach((animation) => animation.finish())
+                        })
 
-                        this.$el
-                            .getAnimations()
-                            .forEach((animation) => animation.finish())
-                    })
-
-                    succeed(({ snapshot, effect }) => {
-                        animation()
+                        succeed(({ snapshot, effect }) => {
+                            animation()
+                        })
                     })
                 },
             )

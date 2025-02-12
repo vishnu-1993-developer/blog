@@ -42,13 +42,23 @@
         $url ??= $entry->getUrl();
     }
 
+    if (! $alignment instanceof Alignment) {
+        $alignment = filled($alignment) ? (Alignment::tryFrom($alignment) ?? $alignment) : null;
+    }
+
     $hintActions = array_filter(
         $hintActions ?? [],
         fn (\Filament\Infolists\Components\Actions\Action $hintAction): bool => $hintAction->isVisible(),
     );
 @endphp
 
-<div {{ $attributes->class(['fi-in-entry-wrp']) }}>
+<div
+    {{
+        $attributes
+            ->merge($entry?->getExtraEntryWrapperAttributes() ?? [])
+            ->class(['fi-in-entry-wrp'])
+    }}
+>
     @if ($label && $labelSrOnly)
         <dt class="sr-only">
             {{ $label }}
@@ -62,7 +72,14 @@
         ])
     >
         @if (($label && (! $labelSrOnly)) || $labelPrefix || $labelSuffix || filled($hint) || $hintIcon)
-            <div class="flex items-center justify-between gap-x-3">
+            <div
+                @class([
+                    'flex items-center gap-x-3',
+                    'justify-between' => (! $labelSrOnly) || $labelPrefix || $labelSuffix,
+                    'justify-end' => $labelSrOnly && ! ($labelPrefix || $labelSuffix),
+                    ($label instanceof \Illuminate\View\ComponentSlot) ? $label->attributes->get('class') : null,
+                ])
+            >
                 @if ($label && (! $labelSrOnly))
                     <x-filament-infolists::entry-wrapper.label
                         :prefix="$labelPrefix"
@@ -91,12 +108,12 @@
 
         <div
             @class([
-                'grid gap-y-2',
+                'grid auto-cols-fr gap-y-2',
                 'sm:col-span-2' => $hasInlineLabel,
             ])
         >
             <dd
-                @if ($tooltip)
+                @if (filled($tooltip))
                     x-data="{}"
                     x-tooltip="{
                         content: @js($tooltip),
@@ -105,13 +122,13 @@
                 @endif
                 @class([
                     match ($alignment) {
-                        Alignment::Center, 'center' => 'text-center',
-                        Alignment::End, 'end' => 'text-end',
-                        Alignment::Justify, 'justify' => 'text-justify',
-                        Alignment::Left, 'left' => 'text-left',
-                        Alignment::Right, 'right' => 'text-right',
-                        Alignment::Start, 'start' => 'text-start',
-                        default => null,
+                        Alignment::Start => 'text-start',
+                        Alignment::Center => 'text-center',
+                        Alignment::End => 'text-end',
+                        Alignment::Justify, Alignment::Between => 'text-justify',
+                        Alignment::Left => 'text-left',
+                        Alignment::Right => 'text-right',
+                        default => $alignment,
                     },
                 ])
             >

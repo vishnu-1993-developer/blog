@@ -5,7 +5,7 @@ import AutoScreenshot from "@components/AutoScreenshot.astro"
 
 ## The problem with traditional table layouts
 
-Traditional tables are notorious for having bad responsiveness. On mobile, there is only so much flexibility you have when rending content that is horizontally long:
+Traditional tables are notorious for having bad responsiveness. On mobile, there is only so much flexibility you have when rendering content that is horizontally long:
 
 - Allow the user to scroll horizontally to see more table content
 - Hide non-important columns on smaller devices
@@ -53,7 +53,7 @@ Split::make([
 
 A `Split` component is used to wrap around columns, and allow them to stack on mobile.
 
-By default, columns within a split will appear aside each other all the time. However, you may choose a responsive [breakpoint](https://tailwindcss.com/docs/responsive-design#overview) where this behaviour starts `from()`. Before this point, the columns will stack on top of each other:
+By default, columns within a split will appear aside each other all the time. However, you may choose a responsive [breakpoint](https://tailwindcss.com/docs/responsive-design#overview) where this behavior starts `from()`. Before this point, the columns will stack on top of each other:
 
 ```php
 use Filament\Support\Enums\FontWeight;
@@ -149,7 +149,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 
 Split::make([
-    ImageColumn::make('avatar') 
+    ImageColumn::make('avatar')
         ->circular(),
     TextColumn::make('name')
         ->weight(FontWeight::Bold)
@@ -357,11 +357,17 @@ Sometimes, you may find that your data fits into a grid format better than a lis
 Simply use the `$table->contentGrid()` method:
 
 ```php
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Table;
 
 public function table(Table $table): Table
 {
     return $table
+        ->columns([
+            Stack::make([
+                // Columns
+            ]),
+        ])
         ->contentGrid([
             'md' => 2,
             'xl' => 3,
@@ -413,7 +419,7 @@ Now, create a `/resources/views/users/table/collapsible-row-content.blade.php` f
     <span class="font-medium">
         Email address:
     </span>
-    
+
     <span>
         {{ $getRecord()->email }}
     </span>

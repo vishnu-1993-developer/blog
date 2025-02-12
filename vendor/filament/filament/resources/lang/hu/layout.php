@@ -7,7 +7,7 @@ return [
     'actions' => [
 
         'billing' => [
-            'label' => 'Előfizetésem kezelése',
+            'label' => 'Előfizetések kezelése',
         ],
 
         'logout' => [
@@ -19,17 +19,17 @@ return [
         ],
 
         'open_user_menu' => [
-            'label' => 'felhasználói menü',
+            'label' => 'Felhasználói menü',
         ],
 
         'sidebar' => [
 
             'collapse' => [
-                'label' => 'Oldalsáv becsukása',
+                'label' => 'Oldalsáv elrejtése',
             ],
 
             'expand' => [
-                'label' => 'Oldalsáv kinyitása',
+                'label' => 'Oldalsáv megjelenítése',
             ],
 
         ],
@@ -45,11 +45,19 @@ return [
             ],
 
             'system' => [
-                'label' => 'Rendszer alapján',
+                'label' => 'Rendszertéma követése',
             ],
 
         ],
 
+    ],
+
+    'avatar' => [
+        'alt' => ':name avatárja',
+    ],
+
+    'logo' => [
+        'alt' => ':name logója',
     ],
 
 ];

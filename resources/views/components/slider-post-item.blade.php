@@ -9,7 +9,7 @@
         </div>
         <a href="{{ $featuredPost->url() }}"><h4>{{ $featuredPost->title }}</h4></a>
         <ul class="post-info">
-          <li><a href="#">{{ $featuredPost->user->name }}</a></li>
+          <li><a href="#">{{ $featuredPost->user->name ?? '' }}</a></li>
           <li><a href="{{ $featuredPost->url() }}">{{ $featuredPost->published_at }}</a></li>
           {{-- <li><a href="#">12 Comments</a></li> --}}
         </ul>

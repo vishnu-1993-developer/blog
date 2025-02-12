@@ -5,9 +5,11 @@ namespace Filament\Tables\Commands;
 use Filament\Support\Commands\Concerns\CanManipulateFiles;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\text;
 
+#[AsCommand(name: 'make:table-column')]
 class MakeColumnCommand extends Command
 {
     use CanManipulateFiles;
@@ -67,7 +69,7 @@ class MakeColumnCommand extends Command
             $this->copyStubToApp('ColumnView', $viewPath);
         }
 
-        $this->components->info("Successfully created {$column}!");
+        $this->components->info("Filament table column [{$path}] created successfully.");
 
         return static::SUCCESS;
     }

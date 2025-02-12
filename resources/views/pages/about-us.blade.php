@@ -1,92 +1,118 @@
-<x-app-layout :title="' - About Us'">
-<!-- Page Content -->
-<!-- Banner Starts Here -->
-<div class="heading-page header-text">
-    <section class="page-heading">
-        <div class="container">
+<x-app-layout>
+<!-- About US Start -->
+<div class="about-area">
+    <div class="container">
+        <!-- Hot Aimated News Tittle-->
         <div class="row">
             <div class="col-lg-12">
-            <div class="text-content">
-                <h4>about us</h4>
-                <h2>more about us!</h2>
-            </div>
-            </div>
-        </div>
-        </div>
-    </section>
-    </div>
-    
-    <!-- Banner Ends Here -->
+                <div class="trending-tittle">
+                    <strong>Trending now</strong>
+                    <!-- <p>Rem ipsum dolor sit amet, consectetur adipisicing elit.</p> -->
+                    <div class="trending-animated">
+                        <ul id="js-news" class="js-hidden">
+                            <li class="news-item">Bangladesh dolor sit amet, consectetur adipisicing elit.</li>
+                            <li class="news-item">Spondon IT sit amet, consectetur.......</li>
+                            <li class="news-item">Rem ipsum dolor sit amet, consectetur adipisicing elit.</li>
+                        </ul>
+                    </div>
 
-
-    <section class="about-us">
-    <div class="container">
-        
+                </div>
+            </div>
+        </div>
         <div class="row">
-        <div class="col-lg-12">
-            <img src="images/about-us.jpg" alt="">
-            <p>Please tell your friends about TemplateMo website. Thank you. You can browse through different categories of templates such as <a rel="nofollow" href="https://templatemo.com/tag/business" target="_parent">business</a>, <a rel="nofollow" href="https://templatemo.com/tag/portfolio" target="_parent">portfolio</a>, <a rel="nofollow" href="https://templatemo.com/tag/restaurant" target="_parent">restaurant</a>, etc. Pellentesque quis luctus libero. Maecenas pretium molestie erat, ac tincidunt leo gravida ac. Cras ullamcorper eu ipsum eu sollicitudin. Fusce vitae commodo turpis. Integer ullamcorper purus nec justo mollis fermentum. Nunc imperdiet erat nec lacinia laoreet. <br><br>Maecenas faucibus ullamcorper felis vitae finibus. Nullam at quam ut lacus aliquam tempor vel sed ipsum. Donec pellentesque tincidunt imperdiet. Mauris sit amet justo vulputate, cursus massa congue, vestibulum odio. Aenean elit nunc, gravida in erat sit amet, feugiat viverra leo. Phasellus interdum, diam commodo egestas rhoncus, turpis nisi consectetur nibh, in vehicula eros orci vel neque.</p>
+            <div class="col-lg-8">
+                <!-- Trending Tittle -->
+                <div class="about-right mb-90">
+                    <div class="about-img">
+                        <img src="{{ url('blog-assets/img/post/about_heor.jpg') }}" alt="">
+                    </div>
+                    <div class="section-tittle mb-30 pt-30">
+                        <h3>About Us</h3>
+                    </div>
+                    <div class="about-prea">
+                        <p class="about-pera1 mb-25">Moms are like…buttons? Moms are like glue. Moms are like pizza
+                            crusts. Moms are the ones who make sure things happen—from birth to school lunch.</p>
+                        <p class="about-pera1 mb-25">Moms are like…buttons? Moms are like glue. Moms are like pizza
+                            crusts. Moms are the ones who make sure things happen—from birth to school lunch.</p>
+                        <p class="about-pera1 mb-25">
+                            My hero when I was a kid was my mom. Same for everyone I knew. Moms are untouchable. They’re
+                            elegant, smart, beautiful, kind…everything we want to be. At 29 years old, my favorite
+                            compliment is being told that I look like my mom. Seeing myself in her image, like this
+                            daughter up top, makes me so proud of how far I’ve come, and so thankful for where I come
+                            from.
+                            the refractor telescope uses a convex lens to focus the light on the eyepiece.
+                            The reflector telescope has a concave lens which means it bends in. It uses mirrors to focus
+                            the image that you eventually see.
+                            Collimation is a term for how well tuned the telescope is to give you a good clear image of
+                            what you are looking at. You want your telescope to have good collimation so you are not
+                            getting a false image of the celestial body.
+                            Aperture is a fancy word for how big the lens of your telescope is. But it’s an important
+                            word because the aperture of the lens is the key to how powerful your telescope is.
+                            Magnification has nothing to do with it, its all in the aperture.
+                            Focuser is the housing that keeps the eyepiece of the telescope, or what you will look
+                            through, in place. The focuser has to be stable and in good repair for you to have an image
+                            you can rely on.
+                            Mount and Wedge. Both of these terms refer to the tripod your telescope sits on. The mount
+                            is the actual tripod and the wedge is the device that lets you attach the telescope to the
+                            mount.
+                            Moms are like…buttons? Moms are like glue. Moms are like pizza crusts. Moms are the ones who
+                            make sure things happen—from birth to school lunch.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <!-- Section Tittle -->
+                <div class="section-tittle mb-40">
+                    <h3>Follow Us</h3>
+                </div>
+                <!-- Flow Socail -->
+                <div class="single-follow mb-45">
+                    <div class="single-box">
+                        <div class="follow-us d-flex align-items-center">
+                            <div class="follow-social">
+                                <a href="#"><img src="assets/img/news/icon-fb.png" alt=""></a>
+                            </div>
+                            <div class="follow-count">
+                                <span>8,045</span>
+                                <p>Fans</p>
+                            </div>
+                        </div>
+                        <div class="follow-us d-flex align-items-center">
+                            <div class="follow-social">
+                                <a href="#"><img src="assets/img/news/icon-tw.png" alt=""></a>
+                            </div>
+                            <div class="follow-count">
+                                <span>8,045</span>
+                                <p>Fans</p>
+                            </div>
+                        </div>
+                        <div class="follow-us d-flex align-items-center">
+                            <div class="follow-social">
+                                <a href="#"><img src="assets/img/news/icon-ins.png" alt=""></a>
+                            </div>
+                            <div class="follow-count">
+                                <span>8,045</span>
+                                <p>Fans</p>
+                            </div>
+                        </div>
+                        <div class="follow-us d-flex align-items-center">
+                            <div class="follow-social">
+                                <a href="#"><img src="assets/img/news/icon-yo.png" alt=""></a>
+                            </div>
+                            <div class="follow-count">
+                                <span>8,045</span>
+                                <p>Fans</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- New Poster -->
+                <div class="news-poster d-none d-lg-block">
+                    <img src="assets/img/news/news_card.jpg" alt="">
+                </div>
+            </div>
         </div>
-        </div>
-        
-        <div class="row">
-        <div class="col-lg-6">
-        <h4>Two-One Donec porttitor augue</h4>
-            <p>Quisque bibendum cursus viverra. Mauris at ex ipsum. Aenean condimentum urna nisl, eget interdum ante euismod vel. Aliquam at metus sit amet nunc dapibus posuere.</p>
-        </div>
-        <div class="col-lg-6">
-        <h4>Two-Two Donec porttitor augue</h4>
-            <p>Maecenas et metus nisl. Morbi ac interdum metus. Aliquam erat volutpat. Donec posuere tortor vel volutpat consequat. Mauris sagittis magna vel tellus semper interdum et id sapien.</p>
-        </div>
-        </div>
-        
-        <div class="row">
-        <div class="col-lg-4 col-md-6">
-        <h4>1-03 Donec porttitor augue</h4>
-            <p>Quisque bibendum cursus viverra. Mauris at ex ipsum. Aenean condimentum urna nisl, eget interdum ante euismod vel. Aliquam at metus sit amet nunc dapibus posuere.</p>
-        </div>
-        <div class="col-lg-4 col-md-6">
-        <h4>2-03 Donec porttitor augue</h4>
-            <p>Maecenas et metus nisl. Morbi ac interdum metus. Aliquam erat volutpat. Donec posuere tortor vel volutpat consequat. Mauris sagittis magna vel tellus semper interdum et id sapien.</p>
-        </div>
-        <div class="col-lg-4">
-        <h4>3-03 Donec porttitor augue</h4>
-            <p>Maecenas et metus nisl. Morbi ac interdum metus. Aliquam erat volutpat. Donec posuere tortor vel volutpat consequat. Mauris sagittis magna vel tellus semper interdum et id sapien.</p>
-        </div>
-        </div>
-        
-        
-        <div class="row">
-        <div class="col-lg-3 col-md-6">
-        <h4>01 Four Columns</h4>
-            <p>Mauris at ex ipsum. Aenean condimentum urna nisl, eget interdum ante euismod vel. Aliquam at metus sit amet nunc dapibus posuere.</p>
-        </div>
-        <div class="col-lg-3 col-md-6">
-        <h4>02 Four Columns</h4>
-            <p>Aliquam erat volutpat. Donec posuere tortor vel volutpat consequat. Mauris sagittis magna vel tellus semper interdum et id sapien.</p>
-        </div>
-        <div class="col-lg-3 col-md-6">
-        <h4>03 Four Columns</h4>
-            <p>Morbi ac interdum metus. Donec posuere tortor vel volutpat consequat. Mauris sagittis magna vel tellus semper interdum et id sapien.</p>
-        </div>
-        <div class="col-lg-3 col-md-6">
-        <h4>04 Four Columns</h4>
-            <p>Aliquam erat volutpat. Donec posuere tortor vel volutpat consequat. Mauris sagittis magna vel tellus semper interdum et id sapien.</p>
-        </div>
-        </div>
-        
-        <div class="row">
-        <div class="col-lg-12">
-            <ul class="social-icons">
-            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="#"><i class="fa fa-behance"></i></a></li>
-            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-            </ul>
-        </div>
-        </div>
-        
-        
     </div>
-</section>
+</div>
+<!-- About US End -->
 </x-app-layout>

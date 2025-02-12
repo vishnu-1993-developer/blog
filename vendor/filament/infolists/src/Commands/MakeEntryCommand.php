@@ -5,9 +5,11 @@ namespace Filament\Infolists\Commands;
 use Filament\Support\Commands\Concerns\CanManipulateFiles;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\text;
 
+#[AsCommand(name: 'make:infolist-entry')]
 class MakeEntryCommand extends Command
 {
     use CanManipulateFiles;
@@ -67,7 +69,7 @@ class MakeEntryCommand extends Command
             $this->copyStubToApp('EntryView', $viewPath);
         }
 
-        $this->components->info("Successfully created {$entry}!");
+        $this->components->info("Filament infolist entry [{$path}] created successfully.");
 
         return static::SUCCESS;
     }

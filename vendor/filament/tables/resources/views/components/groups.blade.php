@@ -1,4 +1,5 @@
 @props([
+    'directionSetting' => false,
     'dropdownOnDesktop' => false,
     'groups',
     'triggerAction',
@@ -46,14 +47,7 @@
         "
     >
         <x-slot name="trigger">
-            <span
-                @class([
-                    'inline-flex',
-                    '-mx-2' => $triggerAction->isIconButton(),
-                ])
-            >
-                {{ $triggerAction }}
-            </span>
+            {{ $triggerAction }}
         </x-slot>
 
         <div class="grid gap-y-6 p-6">
@@ -78,23 +72,25 @@
                 </x-filament::input.wrapper>
             </label>
 
-            <label x-cloak x-show="group" class="grid gap-y-2">
-                <span class="{{ $labelClasses }}">
-                    {{ __('filament-tables::table.grouping.fields.direction.label') }}
-                </span>
+            @if (! $directionSetting)
+                <label x-cloak x-show="group" class="grid gap-y-2">
+                    <span class="{{ $labelClasses }}">
+                        {{ __('filament-tables::table.grouping.fields.direction.label') }}
+                    </span>
 
-                <x-filament::input.wrapper>
-                    <x-filament::input.select x-model="direction">
-                        <option value="asc">
-                            {{ __('filament-tables::table.grouping.fields.direction.options.asc') }}
-                        </option>
+                    <x-filament::input.wrapper>
+                        <x-filament::input.select x-model="direction">
+                            <option value="asc">
+                                {{ __('filament-tables::table.grouping.fields.direction.options.asc') }}
+                            </option>
 
-                        <option value="desc">
-                            {{ __('filament-tables::table.grouping.fields.direction.options.desc') }}
-                        </option>
-                    </x-filament::input.select>
-                </x-filament::input.wrapper>
-            </label>
+                            <option value="desc">
+                                {{ __('filament-tables::table.grouping.fields.direction.options.desc') }}
+                            </option>
+                        </x-filament::input.select>
+                    </x-filament::input.wrapper>
+                </label>
+            @endif
         </div>
     </x-filament::dropdown>
 
@@ -123,23 +119,25 @@
                 </x-filament::input.wrapper>
             </label>
 
-            <label x-cloak x-show="group">
-                <span class="sr-only">
-                    {{ __('filament-tables::table.grouping.fields.direction.label') }}
-                </span>
+            @if (! $directionSetting)
+                <label x-cloak x-show="group">
+                    <span class="sr-only">
+                        {{ __('filament-tables::table.grouping.fields.direction.label') }}
+                    </span>
 
-                <x-filament::input.wrapper>
-                    <x-filament::input.select x-model="direction">
-                        <option value="asc">
-                            {{ __('filament-tables::table.grouping.fields.direction.options.asc') }}
-                        </option>
+                    <x-filament::input.wrapper>
+                        <x-filament::input.select x-model="direction">
+                            <option value="asc">
+                                {{ __('filament-tables::table.grouping.fields.direction.options.asc') }}
+                            </option>
 
-                        <option value="desc">
-                            {{ __('filament-tables::table.grouping.fields.direction.options.desc') }}
-                        </option>
-                    </x-filament::input.select>
-                </x-filament::input.wrapper>
-            </label>
+                            <option value="desc">
+                                {{ __('filament-tables::table.grouping.fields.direction.options.desc') }}
+                            </option>
+                        </x-filament::input.select>
+                    </x-filament::input.wrapper>
+                </label>
+            @endif
         </div>
     @endif
 </div>

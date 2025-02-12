@@ -18,10 +18,12 @@ This attribute is used to retrieve the search result title for that record.
 
 > Your resource needs to have an Edit or View page to allow the global search results to link to a URL, otherwise no results will be returned for this resource.
 
-You may customize the title further by overriding `getGlobalSearchResultTitle()` method:
+You may customize the title further by overriding `getGlobalSearchResultTitle()` method. It may return a plain text string, or an instance of `Illuminate\Support\HtmlString` or `Illuminate\Contracts\Support\Htmlable`. This allows you to render HTML, or even Markdown, in the search result title:
 
 ```php
-public static function getGlobalSearchResultTitle(Model $record): string
+use Illuminate\Contracts\Support\Htmlable;
+
+public static function getGlobalSearchResultTitle(Model $record): string | Htmlable
 {
     return $record->name;
 }
@@ -74,7 +76,7 @@ public static function getGlobalSearchResultUrl(Model $record): string
 
 ## Adding actions to global search results
 
-Global search supports actions, which are buttons that render below each search result. They can open a URL or dispatch a Livewire event. 
+Global search supports actions, which are buttons that render below each search result. They can open a URL or dispatch a Livewire event.
 
 Actions can be defined as follows:
 
@@ -139,7 +141,7 @@ public function panel(Panel $panel): Panel
 }
 ```
 
-## Registering global search keybindings
+## Registering global search key bindings
 
 The global search field can be opened using keyboard shortcuts. To configure these, pass the `globalSearchKeyBindings()` method to the [configuration](configuration):
 
@@ -151,5 +153,55 @@ public function panel(Panel $panel): Panel
     return $panel
         // ...
         ->globalSearchKeyBindings(['command+k', 'ctrl+k']);
+}
+```
+
+## Configuring the global search debounce
+
+Global search has a default debounce time of 500ms, to limit the number of requests that are made while the user is typing. You can alter this by using the `globalSearchDebounce()` method in the [configuration](configuration):
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->globalSearchDebounce('750ms');
+}
+```
+
+## Configuring the global search field suffix
+
+Global search field by default doesn't include any suffix. You may customize it using the `globalSearchFieldSuffix()` method in the [configuration](configuration).
+
+If you want to display the currently configured [global search key bindings](#registering-global-search-key-bindings) in the suffix, you can use the `globalSearchFieldKeyBindingSuffix()` method, which will display the first registered key binding as the suffix of the global search field:
+
+```php
+use Filament\Panel;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->globalSearchFieldKeyBindingSuffix();
+}
+```
+
+To customize the suffix yourself, you can pass a string or function to the `globalSearchFieldSuffix()` method. For example, to provide a custom key binding suffix for each platform manually:
+
+```php
+use Filament\Panel;
+use Filament\Support\Enums\Platform;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        // ...
+        ->globalSearchFieldSuffix(fn (): ?string => match (Platform::detect()) {
+            Platform::Windows, Platform::Linux => 'CTRL+K',
+            Platform::Mac => '⌘K',
+            default => null,
+        });
 }
 ```

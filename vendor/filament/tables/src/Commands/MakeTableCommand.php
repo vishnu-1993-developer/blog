@@ -8,9 +8,11 @@ use Filament\Support\Commands\Concerns\CanReadModelSchemas;
 use Filament\Tables\Commands\Concerns\CanGenerateTables;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 use function Laravel\Prompts\text;
 
+#[AsCommand(name: 'make:livewire-table')]
 class MakeTableCommand extends Command
 {
     use CanGenerateTables;
@@ -84,7 +86,7 @@ class MakeTableCommand extends Command
 
         $this->copyStubToApp('TableView', $viewPath);
 
-        $this->info("Successfully created {$component}!");
+        $this->components->info("Filament table [{$path}] created successfully.");
 
         return static::SUCCESS;
     }

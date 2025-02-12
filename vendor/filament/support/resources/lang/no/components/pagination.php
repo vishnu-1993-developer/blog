@@ -10,7 +10,7 @@ return [
 
         'records_per_page' => [
 
-            'label' => 'Per side',
+            'label' => 'Pr. side',
 
             'options' => [
                 'all' => 'Alle',
@@ -22,8 +22,16 @@ return [
 
     'actions' => [
 
+        'first' => [
+            'label' => 'Første',
+        ],
+
         'go_to_page' => [
             'label' => 'Gå til side :page',
+        ],
+
+        'last' => [
+            'label' => 'Siste',
         ],
 
         'next' => [

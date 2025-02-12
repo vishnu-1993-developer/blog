@@ -3,6 +3,7 @@
 namespace Filament\Support\Concerns;
 
 use Closure;
+use Filament\Support\Enums\IconPosition;
 
 trait HasBadge
 {
@@ -13,8 +14,17 @@ trait HasBadge
      */
     protected string | array | Closure | null $badgeColor = null;
 
-    public function badge(string | int | float | Closure | null $badge): static
+    protected string | Closure | null $badgeIcon = null;
+
+    protected IconPosition | string | Closure | null $badgeIconPosition = null;
+
+    public function badge(string | int | float | Closure | null $badge = null): static
     {
+        if (func_num_args() === 0) {
+            /** @phpstan-ignore-next-line */
+            return $this->view(static::BADGE_VIEW);
+        }
+
         $this->badge = $badge;
 
         return $this;
@@ -34,6 +44,20 @@ trait HasBadge
     public function badgeColor(string | array | Closure | null $color): static
     {
         $this->badgeColor = $color;
+
+        return $this;
+    }
+
+    public function badgeIcon(string | Closure | null $icon): static
+    {
+        $this->badgeIcon = $icon;
+
+        return $this;
+    }
+
+    public function badgeIconPosition(IconPosition | string | Closure | null $position): static
+    {
+        $this->badgeIconPosition = $position;
 
         return $this;
     }
@@ -59,5 +83,15 @@ trait HasBadge
     public function getBadgeColor(): string | array | null
     {
         return $this->evaluate($this->badgeColor);
+    }
+
+    public function getBadgeIcon(): ?string
+    {
+        return $this->evaluate($this->badgeIcon);
+    }
+
+    public function getBadgeIconPosition(): IconPosition | string
+    {
+        return $this->evaluate($this->badgeIconPosition) ?? IconPosition::Before;
     }
 }

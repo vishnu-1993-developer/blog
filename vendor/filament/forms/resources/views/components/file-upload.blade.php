@@ -1,5 +1,21 @@
 @php
     use Filament\Support\Enums\Alignment;
+    use Filament\Support\Facades\FilamentView;
+
+    $imageCropAspectRatio = $getImageCropAspectRatio();
+    $imageResizeTargetHeight = $getImageResizeTargetHeight();
+    $imageResizeTargetWidth = $getImageResizeTargetWidth();
+    $isAvatar = $isAvatar();
+    $statePath = $getStatePath();
+    $isDisabled = $isDisabled();
+    $hasImageEditor = $hasImageEditor();
+    $hasCircleCropper = $hasCircleCropper();
+
+    $alignment = $getAlignment() ?? Alignment::Start;
+
+    if (! $alignment instanceof Alignment) {
+        $alignment = filled($alignment) ? (Alignment::tryFrom($alignment) ?? $alignment) : null;
+    }
 @endphp
 
 <x-dynamic-component
@@ -7,18 +23,12 @@
     :field="$field"
     :label-sr-only="$isLabelHidden()"
 >
-    @php
-        $imageCropAspectRatio = $getImageCropAspectRatio();
-        $imageResizeTargetHeight = $getImageResizeTargetHeight();
-        $imageResizeTargetWidth = $getImageResizeTargetWidth();
-        $isAvatar = $isAvatar();
-        $statePath = $getStatePath();
-        $isDisabled = $isDisabled();
-        $hasImageEditor = $hasImageEditor();
-    @endphp
-
     <div
-        ax-load
+        @if (FilamentView::hasSpaMode())
+            {{-- format-ignore-start --}}ax-load="visible || event (ax-modal-opened)"{{-- format-ignore-end --}}
+        @else
+            ax-load
+        @endif
         ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('file-upload', 'filament/forms') }}"
         x-data="fileUploadFormComponent({
                     acceptedFileTypes: @js($getAcceptedFileTypes()),
@@ -33,6 +43,11 @@
                         return await $wire.getFormUploadedFiles(@js($statePath))
                     },
                     hasImageEditor: @js($hasImageEditor),
+                    hasCircleCropper: @js($hasCircleCropper),
+                    canEditSvgs: @js($canEditSvgs()),
+                    isSvgEditingConfirmed: @js($isSvgEditingConfirmed()),
+                    confirmSvgEditingMessage: @js(__('filament-forms::components.file_upload.editor.svg.messages.confirmation')),
+                    disabledSvgEditingMessage: @js(__('filament-forms::components.file_upload.editor.svg.messages.disabled')),
                     imageCropAspectRatio: @js($imageCropAspectRatio),
                     imagePreviewHeight: @js($getImagePreviewHeight()),
                     imageResizeMode: @js($getImageResizeMode()),
@@ -43,16 +58,20 @@
                     isDeletable: @js($isDeletable()),
                     isDisabled: @js($isDisabled),
                     isDownloadable: @js($isDownloadable()),
+                    isMultiple: @js($isMultiple()),
                     isOpenable: @js($isOpenable()),
                     isPreviewable: @js($isPreviewable()),
                     isReorderable: @js($isReorderable()),
+                    itemPanelAspectRatio: @js($getItemPanelAspectRatio()),
                     loadingIndicatorPosition: @js($getLoadingIndicatorPosition()),
                     locale: @js(app()->getLocale()),
                     panelAspectRatio: @js($getPanelAspectRatio()),
                     panelLayout: @js($getPanelLayout()),
                     placeholder: @js($getPlaceholder()),
-                    maxSize: @js(($size = $getMaxSize()) ? "'{$size} KB'" : null),
-                    minSize: @js(($size = $getMinSize()) ? "'{$size} KB'" : null),
+                    maxFiles: @js($getMaxFiles()),
+                    maxSize: @js(($size = $getMaxSize()) ? "{$size}KB" : null),
+                    minSize: @js(($size = $getMinSize()) ? "{$size}KB" : null),
+                    maxParallelUploads: @js($getMaxParallelUploads()),
                     removeUploadedFileUsing: async (fileKey) => {
                         return await $wire.removeFormUploadedFile(@js($statePath), fileKey)
                     },
@@ -65,6 +84,7 @@
                     shouldTransformImage: @js($imageCropAspectRatio || $imageResizeTargetHeight || $imageResizeTargetWidth),
                     state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')") }},
                     uploadButtonPosition: @js($getUploadButtonPosition()),
+                    uploadingMessage: @js($getUploadingMessage()),
                     uploadProgressIndicatorPosition: @js($getUploadProgressIndicatorPosition()),
                     uploadUsing: (fileKey, file, success, error, progress) => {
                         $wire.upload(
@@ -90,13 +110,12 @@
                 ->merge($getExtraAttributes(), escape: false)
                 ->merge($getExtraAlpineAttributes(), escape: false)
                 ->class([
-                    'fi-fo-file-upload flex',
-                    match ($getAlignment()) {
-                        Alignment::Center, 'center' => 'justify-center',
-                        Alignment::End, 'end' => 'justify-end',
-                        Alignment::Left, 'left' => 'justify-left',
-                        Alignment::Right, 'right' => 'justify-right',
-                        Alignment::Start, 'start', null => 'justify-start',
+                    'fi-fo-file-upload flex flex-col gap-y-2 [&_.filepond--root]:font-sans',
+                    match ($alignment) {
+                        Alignment::Start, Alignment::Left => 'items-start',
+                        Alignment::Center => 'items-center',
+                        Alignment::End, Alignment::Right => 'items-end',
+                        default => $alignment,
                     },
                 ])
         }}
@@ -121,14 +140,24 @@
             />
         </div>
 
+        <div
+            x-show="error"
+            x-text="error"
+            x-cloak
+            class="text-sm text-danger-600 dark:text-danger-400"
+        ></div>
+
         @if ($hasImageEditor && (! $isDisabled))
             <div
                 x-show="isEditorOpen"
                 x-cloak
-                x-on:click.stop
+                x-on:click.stop=""
                 x-trap.noscroll="isEditorOpen"
                 x-on:keydown.escape.window="closeEditor"
-                class="fixed inset-0 isolate z-50 h-screen w-screen p-2 sm:p-10 md:p-20"
+                @class([
+                    'fixed inset-0 isolate z-50 h-[100dvh] w-screen p-2 sm:p-10 md:p-20',
+                    'fi-fo-file-upload-circle-cropper' => $hasCircleCropper,
+                ])
             >
                 <div
                     aria-hidden="true"
@@ -201,7 +230,7 @@
 
                                                         <input
                                                             @class([
-                                                                'block w-full border-none text-sm transition duration-75 focus:border-primary-500 focus:ring-1 focus:ring-inset focus:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus:border-primary-500',
+                                                                'block w-full border-none text-sm transition duration-75 focus-visible:border-primary-500 focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary-500 disabled:opacity-70 dark:bg-gray-700 dark:text-white dark:focus-visible:border-primary-500',
                                                             ])
                                                             x-on:keyup.enter.stop.prevent="{{ $input['alpineSaveHandler'] }}"
                                                             x-on:blur="{{ $input['alpineSaveHandler'] }}"
@@ -226,18 +255,14 @@
                                                     >
                                                         @foreach ($groupedActions as $action)
                                                             <x-filament::button
-                                                                :x-tooltip="'{ content: ' . \Illuminate\Support\Js::from($action['label']) . ', theme: $store.theme }'"
-                                                                x-on:click.stop.prevent="{{ $action['alpineClickHandler'] }}"
                                                                 color="gray"
                                                                 grouped
+                                                                :icon="new \Illuminate\Support\HtmlString($action['iconHtml'])"
+                                                                label-sr-only
+                                                                x-on:click.stop.prevent="{{ $action['alpineClickHandler'] }}"
+                                                                :x-tooltip="'{ content: ' . \Illuminate\Support\Js::from($action['label']) . ', theme: $store.theme }'"
                                                             >
-                                                                {!! $action['iconHtml'] !!}
-
-                                                                <span
-                                                                    class="sr-only"
-                                                                >
-                                                                    {{ $action['label'] }}
-                                                                </span>
+                                                                {{ $action['label'] }}
                                                             </x-filament::button>
                                                         @endforeach
                                                     </x-filament::button.group>

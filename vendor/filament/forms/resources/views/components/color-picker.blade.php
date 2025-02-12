@@ -1,7 +1,13 @@
 @php
+    use Filament\Support\Facades\FilamentView;
+
     $isDisabled = $isDisabled();
+    $isLive = $isLive();
+    $isLiveOnBlur = $isLiveOnBlur();
+    $isLiveDebounced = $isLiveDebounced();
     $isPrefixInline = $isPrefixInline();
     $isSuffixInline = $isSuffixInline();
+    $liveDebounce = $getLiveDebounce();
     $prefixActions = $getPrefixActions();
     $prefixIcon = $getPrefixIcon();
     $prefixLabel = $getPrefixLabel();
@@ -11,7 +17,11 @@
     $statePath = $getStatePath();
 @endphp
 
-<x-dynamic-component :component="$getFieldWrapperView()" :field="$field">
+<x-dynamic-component
+    :component="$getFieldWrapperView()"
+    :field="$field"
+    :inline-label-vertical-alignment="\Filament\Support\Enums\VerticalAlignment::Center"
+>
     <x-filament::input.wrapper
         :disabled="$isDisabled"
         :inline-prefix="$isPrefixInline"
@@ -19,9 +29,11 @@
         :prefix="$prefixLabel"
         :prefix-actions="$prefixActions"
         :prefix-icon="$prefixIcon"
+        :prefix-icon-color="$getPrefixIconColor()"
         :suffix="$suffixLabel"
         :suffix-actions="$suffixActions"
         :suffix-icon="$suffixIcon"
+        :suffix-icon-color="$getSuffixIconColor()"
         :valid="! $errors->has($statePath)"
         :attributes="
             \Filament\Support\prepare_inherited_attributes($getExtraAttributeBag())
@@ -30,19 +42,26 @@
     >
         <div
             x-ignore
-            ax-load
+            @if (FilamentView::hasSpaMode())
+                {{-- format-ignore-start --}}ax-load="visible || event (ax-modal-opened)"{{-- format-ignore-end --}}
+            @else
+                ax-load
+            @endif
             ax-load-src="{{ \Filament\Support\Facades\FilamentAsset::getAlpineComponentSrc('color-picker', 'filament/forms') }}"
             x-data="colorPickerFormComponent({
                         isAutofocused: @js($isAutofocused()),
                         isDisabled: @js($isDisabled),
-                        isLiveOnPickerClose: @js($isLiveOnBlur() || $isLiveDebounced()),
-                        state: $wire.{{ $applyStateBindingModifiers("\$entangle('{$statePath}')") }},
+                        isLive: @js($isLive),
+                        isLiveDebounced: @js($isLiveDebounced),
+                        isLiveOnBlur: @js($isLiveOnBlur),
+                        liveDebounce: @js($liveDebounce),
+                        state: $wire.$entangle('{{ $statePath }}'),
                     })"
             x-on:keydown.esc="isOpen() && $event.stopPropagation()"
             {{ $getExtraAlpineAttributeBag()->class(['flex']) }}
         >
             <x-filament::input
-                x-on:focus="togglePanelVisibility()"
+                x-on:focus="$refs.panel.open($refs.input)"
                 x-on:keydown.enter.stop.prevent="togglePanelVisibility()"
                 x-ref="input"
                 :attributes="
@@ -56,24 +75,20 @@
                             'placeholder' => $getPlaceholder(),
                             'required' => $isRequired() && (! $isConcealed()),
                             'type' => 'text',
-                            'x-model' . ($isLiveDebounced() ? '.debounce.' . $getLiveDebounce() : null) => 'state',
-                            'x-on:blur' => $isLiveOnBlur() ? '$wire.call(\'$refresh\')' : null,
+                            'x-model' . ($isLiveDebounced ? '.debounce.' . $liveDebounce : null) => 'state',
+                            'x-on:blur' => $isLiveOnBlur ? 'isOpen() ? null : commitState()' : null,
                         ], escape: false)
                 "
             />
 
             <div
-                class="flex min-h-full items-center pe-3"
-                x-on:click="$refs.input.focus()"
-            >
-                <div
-                    x-bind:style="{ 'background-color': state }"
-                    x-bind:class="{
-                        'ring-1 ring-inset ring-gray-200 dark:ring-white/10': ! state,
-                    }"
-                    class="h-5 w-5 rounded-full"
-                ></div>
-            </div>
+                class="fi-fo-color-picker-preview my-auto me-3 h-5 w-5 shrink-0 select-none rounded-full"
+                x-on:click="togglePanelVisibility()"
+                x-bind:class="{
+                    'ring-1 ring-inset ring-gray-200 dark:ring-white/10': ! state,
+                }"
+                x-bind:style="{ 'background-color': state }"
+            ></div>
 
             <div
                 wire:ignore.self

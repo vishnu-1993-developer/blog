@@ -63,6 +63,20 @@ public function table(Table $table): Table
 }
 ```
 
+### Displaying links to the first and the last pagination page
+
+To add "extreme" links to the first and the last page using the `extremePaginationLinks()` method:
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->extremePaginationLinks();
+}
+```
+
 ### Using simple pagination
 
 You may use simple pagination by overriding `paginateTableQuery()` method.
@@ -75,7 +89,23 @@ use Illuminate\Database\Eloquent\Builder;
 
 protected function paginateTableQuery(Builder $query): Paginator
 {
-    return $query->simplePaginate($this->getTableRecordsPerPage() == 'all' ? $query->count() : $this->getTableRecordsPerPage());
+    return $query->simplePaginate(($this->getTableRecordsPerPage() === 'all') ? $query->count() : $this->getTableRecordsPerPage());
+}
+```
+
+### Using cursor pagination
+
+You may use cursor pagination by overriding `paginateTableQuery()` method.
+
+First, locate your Livewire component. If you're using a resource from the Panel Builder and you want to add simple pagination to the List page, you'll want to open the `Pages/List.php` file in the resource, not the resource class itself.
+
+```php
+use Illuminate\Contracts\Pagination\CursorPaginator;
+use Illuminate\Database\Eloquent\Builder;
+
+protected function paginateTableQuery(Builder $query): CursorPaginator
+{
+    return $query->cursorPaginate(($this->getTableRecordsPerPage() === 'all') ? $query->count() : $this->getTableRecordsPerPage());
 }
 ```
 
@@ -97,6 +127,18 @@ public function table(Table $table): Table
 ```
 
 In this example, clicking on each post will take you to the `posts.edit` route.
+
+You may also open the URL in a new tab:
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->openRecordUrlInNewTab();
+}
+```
 
 If you'd like to [override the URL](columns/getting-started#opening-urls) for a specific column, or instead [run an action](columns/getting-started#running-actions) when a column is clicked, see the [columns documentation](columns/getting-started#opening-urls).
 
@@ -129,6 +171,18 @@ public function table(Table $table): Table
 {
     return $table
         ->reorderable('order_column');
+}
+```
+
+The `reorderable()` method also accepts a boolean condition as its second parameter, allowing you to conditionally enable reordering:
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->reorderable('sort', auth()->user()->isAdmin());
 }
 ```
 
@@ -166,6 +220,53 @@ public function table(Table $table): Table
 ```
 
 <AutoScreenshot name="tables/reordering/custom-trigger-action" alt="Table with reorderable rows and a custom trigger action" version="3.x" />
+
+## Customizing the table header
+
+You can add a heading to a table using the `$table->heading()` method:
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->heading('Clients')
+        ->columns([
+            // ...
+        ]);
+```
+
+You can also add a description below the heading using the `$table->description()` method:
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->heading('Clients')
+        ->description('Manage your clients here.')
+        ->columns([
+            // ...
+        ]);
+```
+
+You can pass a view to the `$table->header()` method to customize the entire header:
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->header(view('tables.header', [
+            'heading' => 'Clients',
+        ]))
+        ->columns([
+            // ...
+        ]);
+```
 
 ## Polling table content
 
@@ -220,6 +321,18 @@ protected function applySearchToTableQuery(Builder $query): Builder
 Scout uses this `whereIn()` method to retrieve results internally, so there is no performance penalty for using it.
 
 The `applyColumnSearchesToTableQuery()` method ensures that searching individual columns will still work. You can replace that method with your own implementation if you want to use Scout for those search inputs as well.
+
+For the global search input to show, at least one column in the table needs to be `searchable()`. Alternatively, if you are using Scout to control which columns are searchable already, you can simply pass `searchable()` to the entire table instead:
+
+```php
+use Filament\Tables\Table;
+
+public function table(Table $table): Table
+{
+    return $table
+        ->searchable();
+}
+```
 
 ## Query string
 
@@ -300,6 +413,14 @@ public function table(Table $table): Table
 ```
 
 These classes are not automatically compiled by Tailwind CSS. If you want to apply Tailwind CSS classes that are not already used in Blade files, you should update your `content` configuration in `tailwind.config.js` to also scan for classes inside your directory: `'./app/Filament/**/*.php'`
+
+## Resetting the table
+
+If you make changes to the table definition during a Livewire request, for example, when consuming a public property in the `table()` method, you may need to reset the table to ensure that the changes are applied. To do this, you can call the `resetTable()` method on the Livewire component:
+
+```php
+$this->resetTable();
+```
 
 ## Global settings
 

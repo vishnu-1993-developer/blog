@@ -7,19 +7,47 @@ return [
         'actions' => [
 
             'clone' => [
-                'label' => 'Másolás',
+                'label' => 'Duplikálás',
             ],
 
             'add' => [
                 'label' => 'Új :label',
+                'modal' => [
+                    'heading' => 'Új :label',
+                    'actions' => [
+                        'add' => [
+                            'label' => 'Új',
+                        ],
+                    ],
+                ],
             ],
 
             'add_between' => [
-                'label' => 'Beillesztés közé',
+                'label' => 'Beillesztés blokkok közé',
+                'modal' => [
+                    'heading' => 'Új :label',
+                    'actions' => [
+                        'add' => [
+                            'label' => 'Új',
+                        ],
+                    ],
+                ],
             ],
 
             'delete' => [
                 'label' => 'Törlés',
+            ],
+
+            'edit' => [
+                'label' => 'Szerkesztés',
+                'modal' => [
+                    'heading' => 'Blokk szerkesztése',
+                    'actions' => [
+                        'save' => [
+                            'label' => 'Változtatások mentése',
+                        ],
+                    ],
+                ],
             ],
 
             'reorder' => [
@@ -35,19 +63,19 @@ return [
             ],
 
             'collapse' => [
-                'label' => 'Becsuk',
+                'label' => 'Becsukás',
             ],
 
             'expand' => [
-                'label' => 'Kibont',
+                'label' => 'Kibontás',
             ],
 
             'collapse_all' => [
-                'label' => 'Becsuk mindent',
+                'label' => 'Összes becsukása',
             ],
 
             'expand_all' => [
-                'label' => 'Kibont mindent',
+                'label' => 'Összes kibontása',
             ],
 
         ],
@@ -59,7 +87,7 @@ return [
         'actions' => [
 
             'deselect_all' => [
-                'label' => 'Törölje az összes jelölést',
+                'label' => 'Kijelölés megszüntetése',
             ],
 
             'select_all' => [
@@ -77,23 +105,23 @@ return [
             'actions' => [
 
                 'cancel' => [
-                    'label' => 'Mégse',
+                    'label' => 'Mégsem',
                 ],
 
                 'drag_crop' => [
-                    'label' => 'Kijelölés mód',
+                    'label' => 'Méretrevágási mód',
                 ],
 
                 'drag_move' => [
-                    'label' => 'Mozgatás mód',
+                    'label' => 'Mozgatási mód',
                 ],
 
                 'flip_horizontal' => [
-                    'label' => 'A kép vízszintes tükrözése',
+                    'label' => 'Kép vízszintes tükrözése',
                 ],
 
                 'flip_vertical' => [
-                    'label' => 'A kép függőleges tükrözése',
+                    'label' => 'Kép függőleges tükrözése',
                 ],
 
                 'move_down' => [
@@ -113,7 +141,7 @@ return [
                 ],
 
                 'reset' => [
-                    'label' => 'Újra tölt',
+                    'label' => 'Visszaállítás',
                 ],
 
                 'rotate_left' => [
@@ -125,7 +153,7 @@ return [
                 ],
 
                 'set_aspect_ratio' => [
-                    'label' => 'Állítsa be a képarányt :ratio értékre',
+                    'label' => 'Képarány beállítása :ratio értékre',
                 ],
 
                 'save' => [
@@ -154,7 +182,7 @@ return [
                 ],
 
                 'rotation' => [
-                    'label' => 'Forgatás',
+                    'label' => 'Elforgatás',
                     'unit' => 'fok',
                 ],
 
@@ -180,7 +208,16 @@ return [
                 'label' => 'Képarányok',
 
                 'no_fixed' => [
-                    'label' => 'Szabad',
+                    'label' => 'Egyéni',
+                ],
+
+            ],
+
+            'svg' => [
+
+                'messages' => [
+                    'confirmation' => 'Az SVG fájlok szerkesztése nem ajánlott, mivel minőségromláshoz vezethet az átméretezés során.\n Biztosan szeretnéd folytatni?',
+                    'disabled' => 'Az SVG fájlok szerkesztése nem engedélyezett, mivel minőségromláshoz vezethet az átméretezés során.',
                 ],
 
             ],
@@ -202,7 +239,7 @@ return [
             ],
 
             'reorder' => [
-                'label' => 'Sor újrarendezése',
+                'label' => 'Sor mozgatása',
             ],
 
         ],
@@ -229,14 +266,23 @@ return [
             'bold' => 'Félkövér',
             'bullet_list' => 'Felsorolás',
             'code_block' => 'Kódblokk',
-            'heading' => 'Cím',
+            'heading' => 'Címsor',
             'italic' => 'Dőlt',
             'link' => 'Hivatkozás',
             'ordered_list' => 'Számozott lista',
-            'redo' => 'Előre',
+            'redo' => 'Visszaállítás',
             'strike' => 'Áthúzott',
             'table' => 'Táblázat',
-            'undo' => 'Vissza',
+            'undo' => 'Visszavonás',
+        ],
+
+    ],
+
+    'radio' => [
+
+        'boolean' => [
+            'true' => 'Igen',
+            'false' => 'Nem',
         ],
 
     ],
@@ -249,12 +295,16 @@ return [
                 'label' => 'Új :label',
             ],
 
+            'add_between' => [
+                'label' => 'Beillesztés blokkok közé',
+            ],
+
             'delete' => [
                 'label' => 'Törlés',
             ],
 
             'clone' => [
-                'label' => 'Másolás',
+                'label' => 'Duplikálás',
             ],
 
             'reorder' => [
@@ -270,19 +320,19 @@ return [
             ],
 
             'collapse' => [
-                'label' => 'Becsuk',
+                'label' => 'Becsukás',
             ],
 
             'expand' => [
-                'label' => 'Kibont',
+                'label' => 'Kibontás',
             ],
 
             'collapse_all' => [
-                'label' => 'Becsuk mindent',
+                'label' => 'Összes becsukása',
             ],
 
             'expand_all' => [
-                'label' => 'Kibont mindent',
+                'label' => 'Összes kibontása',
             ],
 
         ],
@@ -320,10 +370,10 @@ return [
             'italic' => 'Dőlt',
             'link' => 'Hivatkozás',
             'ordered_list' => 'Számozott lista',
-            'redo' => 'Előre',
+            'redo' => 'Visszaállítás',
             'strike' => 'Áthúzott',
             'underline' => 'Alázhúzott',
-            'undo' => 'Vissza',
+            'undo' => 'Visszavonás',
         ],
 
     ],
@@ -336,7 +386,7 @@ return [
 
                 'modal' => [
 
-                    'heading' => 'Új opció hozzáadása',
+                    'heading' => 'Új elem hozzáadása',
 
                     'actions' => [
 
@@ -345,7 +395,7 @@ return [
                         ],
 
                         'create_another' => [
-                            'label' => 'Hozzáadás és másik hozzáadása',
+                            'label' => 'Mentés és új hozzáadása',
                         ],
 
                     ],
@@ -383,9 +433,9 @@ return [
 
         'max_items_message' => 'Csak :count elem választható ki.',
 
-        'no_search_results_message' => 'Nincs találat',
+        'no_search_results_message' => 'Nincs találat.',
 
-        'placeholder' => 'Válassz...',
+        'placeholder' => 'Válassz ki egy elemet',
 
         'searching_message' => 'Keresés...',
 
@@ -395,6 +445,31 @@ return [
 
     'tags_input' => [
         'placeholder' => 'Címke hozzáadása',
+    ],
+
+    'text_input' => [
+
+        'actions' => [
+
+            'hide_password' => [
+                'label' => 'Jelszó elrejtése',
+            ],
+
+            'show_password' => [
+                'label' => 'Jelszó megjelenítése',
+            ],
+
+        ],
+
+    ],
+
+    'toggle_buttons' => [
+
+        'boolean' => [
+            'true' => 'Igen',
+            'false' => 'Nem',
+        ],
+
     ],
 
     'wizard' => [

@@ -14,9 +14,11 @@ use Livewire\WithPagination;
 
 trait InteractsWithTable
 {
+    use CanBeStriped;
     use CanDeferLoading;
     use CanGroupRecords;
     use CanPaginateRecords;
+    use CanPollRecords;
     use CanReorderRecords;
     use CanSearchRecords;
     use CanSortRecords;
@@ -25,19 +27,17 @@ trait InteractsWithTable
     use HasActions;
     use HasBulkActions;
     use HasColumns;
-    use HasFilters;
-    use HasRecords;
-    use WithPagination {
-        WithPagination::resetPage as resetLivewirePage;
-    }
-    use CanBeStriped;
-    use CanPollRecords;
     use HasContent;
     use HasEmptyState;
+    use HasFilters;
     use HasHeader;
     use HasRecordAction;
     use HasRecordClasses;
+    use HasRecords;
     use HasRecordUrl;
+    use WithPagination {
+        WithPagination::resetPage as resetLivewirePage;
+    }
 
     protected Table $table;
 
@@ -77,11 +77,12 @@ trait InteractsWithTable
             $this->tableFilters = null;
         }
 
-        if (($this->tableFilters === null) && $shouldPersistFiltersInSession && session()->has($filtersSessionKey)) {
-            $this->tableFilters = [
-                ...($this->tableFilters ?? []),
-                ...(session()->get($filtersSessionKey) ?? []),
-            ];
+        if (
+            ($this->tableFilters === null) &&
+            $shouldPersistFiltersInSession &&
+            session()->has($filtersSessionKey)
+        ) {
+            $this->tableFilters = session()->get($filtersSessionKey) ?? [];
         }
 
         // https://github.com/filamentphp/filament/pull/7999
@@ -90,6 +91,10 @@ trait InteractsWithTable
         }
 
         $this->getTableFiltersForm()->fill($this->tableFilters);
+
+        if ($this->getTable()->hasDeferredFilters()) {
+            $this->tableFilters = $this->tableDeferredFilters;
+        }
 
         if ($shouldPersistFiltersInSession) {
             session()->put(
@@ -105,7 +110,11 @@ trait InteractsWithTable
         $shouldPersistSearchInSession = $this->getTable()->persistsSearchInSession();
         $searchSessionKey = $this->getTableSearchSessionKey();
 
-        if (blank($this->tableSearch) && $shouldPersistSearchInSession && session()->has($searchSessionKey)) {
+        if (
+            blank($this->tableSearch) &&
+            $shouldPersistSearchInSession &&
+            session()->has($searchSessionKey)
+        ) {
             $this->tableSearch = session()->get($searchSessionKey);
         }
 
@@ -121,7 +130,11 @@ trait InteractsWithTable
         $shouldPersistColumnSearchesInSession = $this->getTable()->persistsColumnSearchesInSession();
         $columnSearchesSessionKey = $this->getTableColumnSearchesSessionKey();
 
-        if ((blank($this->tableColumnSearches) || ($this->tableColumnSearches === [])) && $shouldPersistColumnSearchesInSession && session()->has($columnSearchesSessionKey)) {
+        if (
+            (blank($this->tableColumnSearches) || ($this->tableColumnSearches === [])) &&
+            $shouldPersistColumnSearchesInSession &&
+            session()->has($columnSearchesSessionKey)
+        ) {
             $this->tableColumnSearches = session()->get($columnSearchesSessionKey) ?? [];
         }
 
@@ -139,7 +152,11 @@ trait InteractsWithTable
         $shouldPersistSortInSession = $this->getTable()->persistsSortInSession();
         $sortSessionKey = $this->getTableSortSessionKey();
 
-        if (blank($this->tableSortColumn) && $shouldPersistSortInSession && session()->has($sortSessionKey)) {
+        if (
+            blank($this->tableSortColumn) &&
+            $shouldPersistSortInSession &&
+            session()->has($sortSessionKey)
+        ) {
             $sort = session()->get($sortSessionKey);
 
             $this->tableSortColumn = $sort['column'] ?? null;
@@ -172,7 +189,6 @@ trait InteractsWithTable
             ->query($this->getTableQuery())
             ->actions($this->getTableActions())
             ->actionsColumnLabel($this->getTableActionsColumnLabel())
-            ->groupedBulkActions($this->getTableBulkActions())
             ->checkIfRecordIsSelectableUsing($this->isTableRecordSelectable())
             ->columns($this->getTableColumns())
             ->columnToggleFormColumns($this->getTableColumnToggleFormColumns())
@@ -193,6 +209,7 @@ trait InteractsWithTable
             ->filters($this->getTableFilters())
             ->filtersFormMaxHeight($this->getTableFiltersFormMaxHeight())
             ->filtersFormWidth($this->getTableFiltersFormWidth())
+            ->groupedBulkActions($this->getTableBulkActions())
             ->header($this->getTableHeader())
             ->headerActions($this->getTableHeaderActions())
             ->modelLabel($this->getTableModelLabel())
@@ -286,5 +303,18 @@ trait InteractsWithTable
                 $value = true;
             }
         }
+    }
+
+    public function resetTable(): void
+    {
+        $this->cacheForms();
+
+        $this->bootedInteractsWithTable();
+
+        $this->resetTableFiltersForm();
+
+        $this->resetPage();
+
+        $this->flushCachedTableRecords();
     }
 }

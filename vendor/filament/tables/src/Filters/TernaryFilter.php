@@ -22,16 +22,22 @@ class TernaryFilter extends SelectFilter
 
         $this->boolean();
 
-        $this->indicateUsing(function (array $state): array {
+        $this->indicateUsing(function (TernaryFilter $filter, array $state): array {
             if (blank($state['value'] ?? null)) {
                 return [];
             }
 
             $stateLabel = $state['value'] ?
-                $this->getTrueLabel() :
-                $this->getFalseLabel();
+                $filter->getTrueLabel() :
+                $filter->getFalseLabel();
 
-            return ["{$this->getIndicator()}: {$stateLabel}"];
+            $indicator = $filter->getIndicator();
+
+            if (! $indicator instanceof Indicator) {
+                $indicator = Indicator::make("{$indicator}: {$stateLabel}");
+            }
+
+            return [$indicator];
         });
     }
 
@@ -51,12 +57,12 @@ class TernaryFilter extends SelectFilter
 
     public function getTrueLabel(): ?string
     {
-        return $this->trueLabel;
+        return $this->evaluate($this->trueLabel);
     }
 
     public function getFalseLabel(): ?string
     {
-        return $this->falseLabel;
+        return $this->evaluate($this->falseLabel);
     }
 
     public function getFormField(): Select
