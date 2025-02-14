@@ -51,9 +51,11 @@
                         <div class="main-menu d-none d-md-block">
                             <nav>                  
                                 <ul id="navigation">
-                                    @foreach($menus['Header Menu'] as $menu)
-                                    <li><a href="{{ route($menu->link) }}">{{ $menu->title }}</a></li>
-                                    @endforeach
+                                    @if(isset($menus['Header Menu']) && count($menus['Header Menu']) > 0)
+                                        @foreach($menus['Header Menu'] as $menu)
+                                        <li><a href="{{ route($menu->link) }}">{{ $menu->title }}</a></li>
+                                        @endforeach
+                                    @endif
                                 </ul>
                             </nav>
                         </div>
