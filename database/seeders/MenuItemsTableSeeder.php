@@ -61,7 +61,7 @@ class MenuItemsTableSeeder extends Seeder
                 'created_at' => '2023-09-30 09:53:06',
                 'id' => 4,
                 'is_external_link' => 0,
-                'link' => 'posts',
+                'link' => 'blogs',
                 'parent_id' => NULL,
                 'sort_order' => 3,
                 'title' => 'Blogs',
