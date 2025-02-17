@@ -1847,7 +1847,7 @@ to {
 }
 @media only screen and (min-width: 1200px) and (max-width: 1600px) {
     .footer-padding {
-    padding-top: 120px;
+    padding-top: 60px;
     padding-bottom: 10px;
 }
 }@media only screen and (min-width: 992px) and (max-width: 1199px) {
@@ -2173,6 +2173,7 @@ to {
 }
 .header-sticky.sticky-bar.sticky .sticky-logo {
     display: block !important;
+    width: 200px;
 }
 .sticky-logo {
     display: none !important;
@@ -2863,7 +2864,7 @@ to {
     background: #100f0f;
 }
 .footer-area .footer-logo {
-    margin-bottom: 40px;
+    margin-bottom: 10px;
 }
 .footer-area .footer-pera p {
     color: #a8a8a8;

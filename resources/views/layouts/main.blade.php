@@ -1,7 +1,7 @@
 <!doctype html>
 <html class="no-js" lang="zxx">
     <head>
-    <x-partials.head />
+    <x-partials.head :siteSetting="$siteSetting" />
    </head>
 
    <body>
@@ -20,7 +20,7 @@
     <!-- Preloader Start -->
 
     <header>
-       <x-partials.header :menus="$menus" />
+       <x-partials.header :menus="$menus" :siteSetting="$siteSetting" />
     </header>
 
     <main>
@@ -28,7 +28,7 @@
     </main>
 
     <footer>
-       <x-partials.footer />
+       <x-partials.footer :siteSetting="$siteSetting" />
     </footer>
     
      <!-- JS here -->
