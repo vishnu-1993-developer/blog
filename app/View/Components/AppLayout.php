@@ -5,8 +5,9 @@ namespace App\View\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use App\Models\{Menu,SiteSetting};
+use App\Models\{Menu};
 use App\Http\Resources\SiteSettingResource;
+use App\Settings\SiteSetting;
 
 class AppLayout extends Component
 {
@@ -15,11 +16,14 @@ class AppLayout extends Component
      */
     public $menus;
     public $title;
-    public $siteSetting = [];
-    public function __construct()
+    public $siteSetting;
+    
+    public function __construct(SiteSetting $siteSetting)
     {
-        $this->siteSetting = Collect(SiteSetting::all());
-        $menus = Menu::where('active','=',1)->get();
+        $this->siteSetting = $siteSetting;
+        $menus = Menu::with(['menu_items'   =>  function($q){
+            $q->orderBy('sort_order','asc');
+        }])->where('active','=',1)->get();
         foreach($menus as $menu)
         {
             $this->menus[$menu->title] = $menu->menu_items;
@@ -31,6 +35,8 @@ class AppLayout extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('layouts.main');
+        return view('layouts.main',[
+            'siteSetting'   =>  $this->siteSetting
+        ]);
     }
 }

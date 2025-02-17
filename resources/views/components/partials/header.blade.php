@@ -8,7 +8,7 @@
                         <div class="header-info-left">
                             <ul>     
                                 <li><img src="{{ url('blog-assets/img/icon/header_icon1.png') }}" alt="">34ºc, Sunny </li>
-                                <li><img src="{{ url('blog-assets/img/icon/header_icon1.png') }}" alt="">Tuesday, 18th June, 2019</li>
+                                <li><img src="{{ url('blog-assets/img/icon/header_icon1.png') }}" alt="">{{ date('l, jS M Y') }}</li>
                             </ul>
                         </div>
                         <div class="header-info-right">
@@ -28,7 +28,7 @@
                     <!-- Logo -->
                     <div class="col-xl-3 col-lg-3 col-md-3">
                         <div class="logo">
-                            <a href="{{ route('home') }}"><img src="{{ url('blog-assets/img/logo/logo.png') }}" alt=""></a>
+                            <a href="{{ route('home') }}"><img width="100%" height="auto" src="{{ asset('storage/' . $siteSetting->header_logo) ?? 'Expert Info' }}" alt=""></a>
                         </div>
                     </div>
                     <div class="col-xl-9 col-lg-9 col-md-9">
@@ -45,7 +45,7 @@
                     <div class="col-xl-8 col-lg-8 col-md-8 col-7 header-flex">
                         <!-- sticky -->
                             <div class="sticky-logo">
-                                <a href="{{ route('home') }}"><img src="{{ url('blog-assets/img/logo/logo.png') }}" alt=""></a>
+                                <a href="{{ route('home') }}"><img width="100%" height="auto" src="{{ asset('storage/' . $siteSetting->header_sticky_logo) ?? 'Expert Info' }}" alt=""></a>
                             </div>
                         <!-- Main-menu -->
                         <div class="main-menu d-none d-md-block">

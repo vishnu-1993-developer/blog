@@ -7,18 +7,12 @@
                     <div class="single-footer-caption">
                         <!-- logo -->
                         <div class="footer-logo">
-                            <a href="index.html"><img src="{{ url('blog-assets/img/logo/logo2_footer.png') }}" alt=""></a>
+                            <a href="index.html"><img width="75%" height="auto" src="{{ asset('storage/' . $siteSetting->footer_logo) ?? 'Expert Info' }}" alt=""></a>
                         </div>
                         <div class="footer-tittle">
                             <div class="footer-pera">
-                                <p>Suscipit mauris pede for con sectetuer sodales adipisci for cursus fames lectus tempor da blandit gravida sodales  Suscipit mauris pede for con sectetuer sodales adipisci for cursus fames lectus tempor da blandit gravida sodales  Suscipit mauris pede for sectetuer.</p>
+                                <p> {{ $siteSetting->description }} </p>
                             </div>
-                        </div>
-                        <!-- social -->
-                        <div class="footer-social">
-                            <a href="#"><i class="fab fa-twitter"></i></a>
-                            <a href="#"><i class="fab fa-instagram"></i></a>
-                            <a href="#"><i class="fab fa-pinterest-p"></i></a>
                         </div>
                     </div>
                 </div>
@@ -72,14 +66,22 @@
    <div class="container">
        <div class="footer-border">
             <div class="row d-flex align-items-center justify-content-between">
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <div class="footer-copy-right">
                         <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="ti-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div style="text-align:center" class="col-lg-4 footer-area">
+                     <!-- social -->
+                     <div class="footer-social">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
                     <div class="footer-menu f-right">
                         <ul>                             
                             <li><a href="#">Terms of use</a></li>

@@ -13,7 +13,7 @@ class MenuMenuItem extends Pivot
 
     protected $table = "menu__menu_item";
 
-    protected $filable = [
+    protected $fillable = [
         "sort_order",
         "include_subitem"
     ];
